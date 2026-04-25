@@ -4,9 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build-proof": "tsx src/index.ts"
+    "build-proof": "tsx src/index.ts",
+    "codegen": "aztec codegen ../target --outdir src/artifacts",
+    "submit": "tsx src/submit.ts"
   },
   "dependencies": {
+    "@aztec/accounts": "4.2.0",
+    "@aztec/aztec.js": "4.2.0",
+    "@aztec/wallets": "4.2.0",
     "@chainsafe/persistent-merkle-tree": "^1.2.5",
     "@lodestar/api": "^1.42.0",
     "@lodestar/config": "^1.42.0",

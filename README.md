@@ -7,12 +7,12 @@ contained inside a beacon block root via an SSZ Merkle proof.
 
 - `src/beacon_el_proof.nr` — contract entry (`BeaconElProof`)
 - `src/beacon_el_proof/{verifier,fixture}.nr` — submodules
-- `ts/` — TS prover; generates `proof-<slot>.json` and writes `src/beacon_el_proof/fixture.nr`
+- `ts/` — TS prover and call script; generates `proof-<slot>.json` and writes `src/beacon_el_proof/fixture.nr`
 
-## Local deploy
+## Local network setup
 
-Requires the Aztec toolchain (`aztec`, `aztec-wallet`, `nargo`) installed via
-`install.aztec.network` at version `4.2.0-aztecnr-rc.2` or compatible.
+Requires the Aztec toolchain (`aztec`, `nargo`) installed via
+`install.aztec.network` at version `4.2.0` or compatible.
 
 ```bash
 # 1. Start the local network (PXE + node on :8080, anvil L1 on :8545)
@@ -20,23 +20,34 @@ aztec start --local-network
 
 # 2. Compile (in another terminal, from repo root)
 aztec compile                      # → target/ssz-BeaconElProof.json
-
-# 3. Load the prefunded test accounts into the wallet
-aztec-wallet import-test-accounts  # registers test0, test1, ...
-
-# 4. Deploy (no initializer on this contract)
-aztec-wallet deploy ./target/ssz-BeaconElProof.json \
-  --from accounts:test0 -a beacon_el_proof --no-init
-
-# 5. Call it
-aztec-wallet simulate hello_world \
-  --from test0 --contract-address contracts:beacon_el_proof
 ```
 
-## Generate a real proof and verify it
+The contract has no public functions and no initializer, so it does **not**
+need an on-chain deploy step — both `simulate` and `send` work after a local
+PXE registration done by the call script below.
+
+## Generate a real proof and verify it (Noir TXE test)
 
 ```bash
 cd ts && yarn install
 yarn build-proof <slot>            # writes ../src/beacon_el_proof/fixture.nr
-cd .. && nargo test                # runs verify_real_proof against the fixture
+cd .. && aztec test                # runs verify_real_proof against the fixture
 ```
+
+## Submit a verify_el_state_root call
+
+```bash
+cd ts
+yarn codegen                       # → src/artifacts/BeaconElProof.ts
+
+# Simulate (returns the bool locally, no tx, no fee)
+yarn submit proof-14190879.json
+
+# Or broadcast a transaction
+MODE=send yarn submit proof-14190879.json
+```
+
+`src/submit.ts` reads `proof-<slot>.json`, computes the contract's deterministic
+address and registers the instance with the local PXE (no on-chain deploy),
+funds itself with the first prefunded test account, and invokes
+`verify_el_state_root`.
