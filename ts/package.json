@@ -8,13 +8,18 @@
   },
   "dependencies": {
     "@chainsafe/persistent-merkle-tree": "^1.2.5",
-    "@chainsafe/ssz": "^1.4.0",
+    "@lodestar/api": "^1.42.0",
+    "@lodestar/config": "^1.42.0",
     "@lodestar/types": "^1.42.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "viem": "^2.21.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
+  },
+  "resolutions": {
+    "vitest": "1.6.0"
   }
 }
