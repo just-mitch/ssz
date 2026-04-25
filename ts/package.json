@@ -1,0 +1,20 @@
+{
+  "name": "ssz-prover",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build-proof": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@chainsafe/persistent-merkle-tree": "^1.2.5",
+    "@chainsafe/ssz": "^1.4.0",
+    "@lodestar/types": "^1.42.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}
