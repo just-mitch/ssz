@@ -11,6 +11,7 @@
   "dependencies": {
     "@aztec/accounts": "4.2.0",
     "@aztec/aztec.js": "4.2.0",
+    "@aztec/bb.js": "4.2.0",
     "@aztec/wallets": "4.2.0",
     "@chainsafe/persistent-merkle-tree": "^1.2.5",
     "@lodestar/api": "^1.42.0",

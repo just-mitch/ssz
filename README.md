@@ -40,11 +40,17 @@ cd .. && aztec test                # runs verify_real_proof against the fixture
 cd ts
 yarn codegen                       # → src/artifacts/BeaconElProof.ts
 
-# Simulate (returns the bool locally, no tx, no fee)
+# Simulate (returns the bool locally, no tx, no fee, no proof)
 yarn submit proof-14190879.json
 
-# Or broadcast a transaction
+# Broadcast a tx with a real client-side proof (wasm prover, default)
 MODE=send yarn submit proof-14190879.json
+
+# Native prover (faster; needs the bb binary on PATH or via BB_BINARY_PATH)
+MODE=send PXE_PROVER=native yarn submit proof-14190879.json
+
+# Send without proof generation (local-network accepts unproven txs)
+MODE=send PXE_PROVER=none yarn submit proof-14190879.json
 ```
 
 `src/submit.ts` reads `proof-<slot>.json`, computes the contract's deterministic
