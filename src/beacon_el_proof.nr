@@ -4,7 +4,7 @@ mod fixture;
 use aztec::macros::aztec;
 
 #[aztec]
-contract Main {
+contract BeaconElProof {
     use crate::verifier::verify_el_state_root_in_beacon_root;
     use aztec::macros::functions::{external, view};
 
@@ -34,16 +34,16 @@ contract Main {
     }
 
     mod test {
-        use crate::{fixture, Main};
+        use crate::{fixture, BeaconElProof};
         use aztec::test::helpers::test_environment::TestEnvironment;
 
         #[test]
         unconstrained fn test_hello_world() {
             let mut env = TestEnvironment::new();
             let caller = env.create_light_account();
-            let contract_address = env.deploy("Main").without_initializer();
+            let contract_address = env.deploy("BeaconElProof").without_initializer();
 
-            let result = env.view_private(caller, Main::at(contract_address).hello_world());
+            let result = env.view_private(caller, BeaconElProof::at(contract_address).hello_world());
 
             assert_eq(result, 0x68656c6c6f20776f726c64);
         }
@@ -55,11 +55,11 @@ contract Main {
             if !fixture::IS_PLACEHOLDER {
                 let mut env = TestEnvironment::new();
                 let caller = env.create_light_account();
-                let contract_address = env.deploy("Main").without_initializer();
+                let contract_address = env.deploy("BeaconElProof").without_initializer();
 
                 let ok = env.view_private(
                     caller,
-                    Main::at(contract_address).verify_el_state_root(
+                    BeaconElProof::at(contract_address).verify_el_state_root(
                         fixture::EL_STATE_ROOT,
                         fixture::PROOF,
                         fixture::BEACON_BLOCK_ROOT,
