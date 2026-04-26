@@ -2,6 +2,13 @@
 
 I include the following to help devs roughly see the path I took here, in the hopes it may be useful to gauge claude's effectiveness developing across aztec, ethereum, and lean.
 
+See also https://docs.aztec.network/developers/ai_tooling. I used 
+```
+/plugin marketplace add critesjosh/aztec-claude-plugin
+/plugin install aztec@aztec-plugins
+```
+
+
 ## Set up
 
 ```bash
