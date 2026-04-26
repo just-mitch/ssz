@@ -2,3 +2,4 @@ target
 src/fixture.nr
 ts/codegenCache.json
 codegenCache.json
+.DS_Store
