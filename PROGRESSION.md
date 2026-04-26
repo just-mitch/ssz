@@ -28,5 +28,4 @@ Use `aztec compile` / `aztec test`, never bare `nargo` (artifacts are incomplete
 5. *"Add a separate TX submission path that also submits a transaction to the `hello_world` endpoint. I want to bench the time needed to prove both transactions and compare them, under both `PXE_PROVER=native` and `PXE_PROVER=wasm`, on at least two fixtures, with hardware specs in the README."*
 6. *"Create a new forge project in this repo to confirm EIP-4788's beacon-roots ring buffer can cheaply verify a beacon hash. Use soldeer for deps."*
 7. *"Use Lean to formally verify `src/beacon_el_proof/verifier.nr`. Treat the hash as an oracle and prove the tree-walking logic modulo collision-resistance. Implement `verify_sound_via_collision`, prove `verify_rejects_small_gindex`, prove `verify_rejects_large_gindex`."*
-8. *"Write the README for the [AZIP-13](https://github.com/AztecProtocol/governance/pull/13) audience: why first, then benchmarks + hardware, then an honest delineation of what's measured vs. assumed (`AZIP_DESIGN.md`)."*
 
