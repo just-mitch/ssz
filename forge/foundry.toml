@@ -1,0 +1,16 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["dependencies"]
+remappings = ["forge-std/=dependencies/forge-std-1.10.0/src/"]
+
+[soldeer]
+remappings_generate = true
+remappings_regenerate = true
+remappings_version = false
+remappings_prefix = ""
+remappings_location = "config"
+recursive_deps = true
+
+[dependencies]
+forge-std = "1.10.0"
