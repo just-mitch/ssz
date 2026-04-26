@@ -1,13 +1,23 @@
-# BeaconElProof
+# Beacon EL Proof
 
 Aztec Noir contract that verifies an Ethereum execution-layer state root is
 contained inside a beacon block root via an SSZ Merkle proof.
+
+## Purpose
+
+This repo gathers data for [AztecProtocol/governance#13](https://github.com/AztecProtocol/governance/pull/13):
+specifically, the cost of including only a beacon block hash in Aztec's global
+variables (and proving inclusion in app circuits) versus including the EL state root
+directly. It also doubles as a test of Claude on formal methods (Lean) and basic
+contract benchmarking. See [PROGRESSION.md](./PROGRESSION.md) for the development path.
 
 ## Layout
 
 - `src/beacon_el_proof.nr` — contract entry (`BeaconElProof`)
 - `src/beacon_el_proof/{verifier,fixture}.nr` — submodules
 - `ts/` — TS prover and call script; generates `proof-<slot>.json` and writes `src/beacon_el_proof/fixture.nr`
+- `forge/` — Solidity L1-side check (EIP-4788 beacon-roots ring buffer)
+- `lean/` — Lean formalization of the verifier (soundness, completeness, rejection theorems)
 
 ## Local network setup
 
@@ -60,10 +70,17 @@ funds itself with the first prefunded test account, and invokes
 
 ## Benchmark proving time (no broadcast)
 
-`MODE=prove` runs the full client-side prover via PXE `profileTx` and reports
-`stats.timings.proving` — no tx is sent, no fee is paid, no sequencer involved.
-`TARGET=bench` runs both `hello_world` and `verify_el_state_root` back-to-back so
-their proving cost can be compared on the same backend in the same process.
+### Gate counts
+
+App-circuit gate counts can be inspected directly with `aztec profile gates`:
+
+```
+ssz-BeaconElProof::hello_world                  5,524
+ssz-BeaconElProof::verify_el_state_root       113,758
+```
+
+### Proving times
+
 
 ```bash
 cd ts
@@ -74,6 +91,11 @@ MODE=prove TARGET=bench PXE_PROVER=wasm   yarn submit proof-<slot>.json
 # Native prover (~2x faster on Apple Silicon; uses the bundled bb)
 MODE=prove TARGET=bench PXE_PROVER=native yarn submit proof-<slot>.json
 ```
+
+`MODE=prove` runs the full client-side prover via PXE `profileTx` and reports
+`stats.timings.proving` — no tx is sent, no fee is paid, no sequencer involved.
+`TARGET=bench` runs both `hello_world` and `verify_el_state_root` back-to-back so
+their proving cost can be compared on the same backend in the same process.
 
 Validate end-to-end against a different beacon block before benching:
 
